@@ -19,21 +19,6 @@ var exphbs = require('express-handlebars');
  app.engine('handlebars', exphbs({ defaultLayout: "main" }));
  app.set('view engine', 'handlebars');
 
-var connection = mysql.createConnection({
-     host: 'localhost',
-     port: 8080,
-     user: 'root',
-     password: 'Charityandgary2',
-     database: 'burgers-db'
- });
-
- connection.connect(function(err) {
-     if(err) {
-         console.error('Error connecting: ' + err.stack);
-         return;
-     }
-        console.log('Connected as id ' + connection.threadId);
- });
 
  //Starts server so that it can begin listening to client request.
  app.listen(PORT, function() {
