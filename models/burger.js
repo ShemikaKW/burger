@@ -8,20 +8,7 @@ var burger = {
         });
 
     },
-
-    devoured: function (vals, callback) {
-        orm.devoured('eat-da-burger', [
-            'burger_name', "devoured"
-        ], [vals, false], callback);
-    },
-
-    update: function (devoured, id, callback) {
-        var condition = "id=" + id;
-        orm.update('burgers', {
-            devoured: devoured
-        }, condition, callback);
-    },
-
+   
     create: function (vals, callback) {
         orm.create('burgers', [
             'burger_name', 'devoured'
@@ -31,7 +18,7 @@ var burger = {
     update: function (create, id, callback) {
         var condition = "id=" + id;
         orm.update('burgers', {
-            devoured: create
+            devoured: true,
         }, condition, callback);
     },
 }
