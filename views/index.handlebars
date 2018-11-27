@@ -1,25 +1,125 @@
-<div class="container">
+<div class="container bg">
+
     <div class="row">
-        <div class="col-md-12 text-center" id="title">
-            <h1>Eat-Da-Burger!</h1>
-        </div>
-        <div class="col-md-6 text-center" id="task">
-            <div class="row">
-                {{#each burger_data}}
-                    {{#unless this.devoured}}
-                <div class="col-md-9 text-center">
-                    <p>{{this.id}}. {{this.burger_name}}</p>
-                </div>
-                <div class="col-md-3 text-center">
-                    <form method="POST" action="/burgers/update?_method=PUT" class="button-size">
-                        <input type="hidden" name="burger_id" type="text" value={{this.id}}>
-                        <br>
-                        <button type="submit" class="btn btn-primary">Devour It!</button>
-                    </form>
-                </div>
-                {{/unless}}
-                {{/each}}
-            </div>
+        <div class="center col-sm-12">
+            <h1>Eat-Da-Burger</h1>
+            <img src="/assets/img/burger.jpeg" alt="Eat-Da-Burger">
+
+            <p></p>
         </div>
     </div>
-</div>
+    <!-- end .row -->
+
+    <div class="row">
+        <div class="col-sm-6">
+
+            <br>
+            <h2>Burgers Available To Eat!</h2>
+
+            <ul>
+                {{#each burgers}}
+                {{#unless this.devoured}}
+                <li>
+                    {{this.id}}
+                    {{this.burger_name}}
+
+                    <form>
+                        <input type="hidden" name="devoured" value="true">
+                        <button id="{{id}}" class="btn-primary devour" type="submit">Devour It!</button>
+                    </form>
+
+                </li>
+                {{/unless}}
+                {{/each}}
+            </ul>
+
+        </div>
+
+        <div class="col-sm-6">
+            <br>
+            <h2>Burgers That Have Been Eaten!</h2>
+
+            {{#each burgers}}
+            {{#if this.devoured}}
+            <li>
+                {{this.id}}
+                {{this.burger_name}}
+
+            </li>
+            {{/if}}
+            {{/each}}
+
+        </div>
+
+    </div>
+
+
+    <div class="row">
+        <div class="center col-sm-12">
+
+            <h2>Add A Burger!</h2>
+            <div id="createburger" class="button-size">
+                <p>Enter a burger you want to order and click the Submit Order button.</p>
+
+                <form class="create-update-form">
+                    <input type="text" id="ca" name="burger_name">
+                    <button class="btn-primary create" type="submit">Submit Order</button>
+                </form>
+            </div>
+
+
+        </div>
+
+        <script>
+            $(".devour").on("click", function (e) {
+                e.preventDefault();
+                console.log(this.id);
+                $.ajax({
+                    method: "PUT",
+                    url: "/burger/update/" + this.id,
+                    data: {
+                        devoured: true
+                    }
+                }).then(function (res) {
+                    window.location.reload();
+                });
+            });
+            $(".update").on("submit", function (event) {
+                // Make sure to preventDefault on a submit event.
+                event.preventDefault();
+                // Get the ID by finding an element with a "name" attribute equal to the string "id"
+                var updatedBurger = {
+                    burgers: $(".update [burger_name]").val().trim()
+                };
+                // Send the PUT request.
+                $.ajax("/burgers/" + id, {
+                    type: "PUT",
+                    data: newBurgers,
+                }).then(
+                    function () {
+                        console.log("updated id ", id);
+                        // Reload the page to get the updated list
+                        location.reload();
+                    })
+            });
+            $(".create").on("click", function (event) {
+                // Make sure to preventDefault on a submit event.
+                event.preventDefault();
+                // [name=burger] will find an element with a "name" attribute equal to the string "burger
+                var newBurger = {
+                    burgers: $("#ca").val().trim()
+                };
+                console.log(newBurger);
+                // Send the POST request.
+                $.ajax("/burger/create", {
+                    method: "POST",
+                    data: newBurger,
+                }).then(
+                    function () {
+                        console.log("added new burger");
+                        // Reload the page to get the updated list
+                        location.reload();
+                    }
+                );
+            });
+        </script>

@@ -8,6 +8,17 @@ var burger = {
         });
 
     },
+    devoured: function (vals, cb) {
+        orm.devoured("eat-da-burger", [
+            "burger_name", "devoured"
+        ], [vals, false], cb);
+    },
+    update: function (devoured, id, cb) {
+        var condition = "id=" + id;
+        orm.update("burgers", {
+            devoured: devoured
+        }, condition, cb);
+    },
    
     create: function (vals, callback) {
         orm.create('burgers', [
