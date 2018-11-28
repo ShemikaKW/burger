@@ -29,7 +29,7 @@ var burger = {
     update: function (create, id, callback) {
         var condition = "id=" + id;
         orm.update('burgers', {
-            devoured: true,
+            devoured: create
         }, condition, callback);
     },
 }
